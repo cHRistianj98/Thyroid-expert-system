@@ -1,6 +1,5 @@
 package disease;
 
-import enums.TSH_BORD;
 import enums.State;
 
 public class TSH implements disease.State {
@@ -15,12 +14,6 @@ public class TSH implements disease.State {
     }
 
     public void setState(double tshValue) {
-        TSH_BORD tsh_bord;
-
-        if (tshValue < 10 && tshValue > 6) {
-            tsh_bord = TSH_BORD.HIGH;
-        }
-
         if (tshValue == 0) {
             tshState = State.NOT_READY;
         } else if (tshValue < 0.2 && tshValue > 0) {

@@ -8,6 +8,7 @@ import disease.TBG;
 import disease.TSH;
 import disease.TT4;
 import enums.State;
+import org.w3c.dom.html.HTMLDOMImplementation;
 
 import java.util.Scanner;
 
@@ -40,27 +41,39 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Podaj swoją płeć (true - mann, false - woman):");
+        System.out.println("Czy jesteś mężczyzną (true/false)?:");
         sex = scanner.nextBoolean();
 
-        System.out.println("Podaj swój wiek");
+        System.out.println("Podaj swój wiek (1-100):");
         age = scanner.nextInt();
 
-        System.out.println("Podaj ilość TSH w μIU/ml:");
+        System.out.println("Podaj ilość TSH w μIU/ml (0-15):");
         double tsh_value = scanner.nextDouble();
         tsh = new TSH(tsh_value);
 
-        System.out.println("Podaj ilość T3 w pg/mL:");
+        System.out.println("Podaj ilość T3 w pg/mL (0-5):");
         double t3_value = scanner.nextDouble();
         t3 = new T3(tsh_value);
 
-        System.out.println("Podaj ilość T3:");
+        System.out.println("Podaj ilość FTI (0-200):");
         double fti_value = scanner.nextDouble();
         fti = new FTI(tsh_value);
 
-        System.out.println("Podaj ilość TT4:");
+        System.out.println("Podaj ilość TT4 (0-200):");
         double tt4_value = scanner.nextDouble();
         tt4 = new TT4(tsh_value);
+
+        System.out.println("Podaj ilość T4U (0-2):");
+        double t4u_value = scanner.nextDouble();
+        t4U = new T4U(t4u_value);
+
+        System.out.println("Podaj ilość FT4 (0-50):");
+        double ft4_value = scanner.nextDouble();
+        ft4 = new FT4(ft4_value);
+
+        System.out.println("Podaj ilość TBG (0-50):");
+        double tbg_value = scanner.nextDouble();
+        tbg = new TBG(tbg_value);
 
         hithy();
         borthy();
@@ -74,8 +87,8 @@ public class Main {
         ovulatory();
         pregnant();
         sick();
-        StringBuilder diagnosis = diagnosis();
-        System.out.println(diagnosis);
+
+        System.out.println(diagnosis());
 
     }
 
@@ -84,13 +97,11 @@ public class Main {
 
         if (t3.getT3State().equals(State.HIGH)
                 && hithy
-                && tsh.getTshState().equals(State.MISSING)
                 && (!tbg.getTbgState().equals(State.HIGH) && !t4U.getT4uState().equals(State.HIGH))) {
             diagnosis.append("T3 i THY są podwyższone zgodnie z tyreotoksykozą.\n");
         }
         if (t3.getT3State().equals(State.HIGH)
                 && hithy
-                && tsh.getTshState().equals(State.MISSING)
                 && (tbg.getTbgState().equals(State.HIGH) || t4U.getT4uState().equals(State.HIGH))) {
             diagnosis.append("T3 i THY są podwyższone zgodnie z tyreotoksykozą i podwyższonym " +
                     "poziomem białka wiążącego. \n");
@@ -109,6 +120,276 @@ public class Main {
             diagnosis.append("Podwyższone T3, THY i TSH zgodne z opornością obwodową lub wtórną nadczynnością tarczycy. \n");
         }
 
+        if (t3.getT3State().equals(State.NORMAL)
+                && (hithy || vhthy)
+                && tsh.getTshState().equals(State.HIGH)
+                && !t4U.getT4uState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone THY i TSH, możliwa interferencja leków, oporność obwodowa lub wtórna nadczynność tarczycy. \n");
+        }
+
+        if (t3.getT3State().equals(State.HIGH)
+                && (hithy || vhthy)
+                && tsh.getTshState().equals(State.HIGH)
+                && t4U.getT4uState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone T3, THY i TSH zgodne z przeciwciałami, opornością obwodową lub wtórną nadczynnością tarczycy.\n");
+        }
+
+        if (t3.getT3State().equals(State.HIGH)
+                && tt4.getTt4State().equals(State.HIGH)
+                && fti.getFtiState().equals(State.NORMAL)
+                && tsh.getTshState().equals(State.HIGH)
+                && !pregnant) {
+            diagnosis.append("Podwyższone T3,TT4 i TSH zgodne z przeciwciałami.\n");
+        }
+
+        if (lothy && (t3.getT3State().equals(State.NORMAL))) {
+            diagnosis.append("Niskie THY. \n");
+            diagnosis.append("zgodne z wtórną niedoczynnością tarczycy. \n");
+        }
+
+        if (lothy && tsh.getTshState().equals(State.NORMAL)) {
+            diagnosis.append("Niski THY zgodny z chorym stanem eutyreozy. \n");
+        }
+
+        if (lothy && (t3.getT3State().equals(State.NORMAL))) {
+            diagnosis.append("Niskie THY. \n");
+            diagnosis.append("Rozpoznanie pierwotnej niedoczynności tarczycy zależy od TSH. \n");
+        }
+
+        if (t3.getT3State().equals(State.LOW)
+                && (tsh.getTshState().equals(State.NORMAL) || tsh.getTshState().equals(State.LOW))) {
+            diagnosis.append("T3 jest niski, co sugeruje chory stan eutyreozy. \n");
+        }
+
+        if (t3.getT3State().equals(State.LOW)) {
+            diagnosis.append("Rozpoznanie niedoczynności tarczycy w niskim T3 zależy od TSH. \n");
+        }
+
+        if (tsh.getTshState().equals(State.LOW) && t3.getT3State().equals(State.LOW)
+                && tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Ten profil zgodny z chorym stanem eutyreozy. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
+                && fti.getFtiState().equals(State.NORMAL) && t3.getT3State().equals(State.LOW)
+                && !tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Niskie T4, T3 i T4U wskazujące na niskie wiązanie białka. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
+                && !t3.getT3State().equals(State.LOW) && fti.getFtiState().equals(State.NORMAL)
+                && !tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Niskie T4 i T4U wskazujące na niskie wiązanie białka. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW) && t3.getT3State().equals(State.LOW)
+                && fti.getFtiState().equals(State.HIGH) && tsh.getTshState().equals(State.NORMAL)) {
+            diagnosis.append("Ten profil jest zgodny z chorym stanem eutyreozy z równoczesnym niskim wiązaniem białka. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
+                && t3.getT3State().equals(State.LOW) && fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Niskie T4, T3 i T4U wskazujące na niskie wiązanie białka. Podwyższona FTI z powodu terapii tyroksyną. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
+                && fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Niskie T4 i T4U wskazujące na niskie wiązanie białka. Podwyższona FTI z powodu terapii tyroksyną. \n");
+        }
+
+        if (tt4.getTt4State().equals(State.LOW) && !t4U.getT4uState().equals(State.LOW)
+                && (ft4.getFt4State().equals(State.NORMAL) || fti.getFtiState().equals(State.NORMAL))
+                && t3.getT3State().equals(State.NORMAL)
+                && (tsh.getTshState().equals(State.NORMAL) || tsh.getTshState().equals(State.LOW))) {
+            diagnosis.append("T4 jest niski. Zapytanie o białko o niskim poziomie wiązania. \n");
+        }
+
+        if (tbg.getTbgState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone TBG. \n");
+        }
+
+        if (lothy && !t3.getT3State().equals(State.NORMAL)) {
+            diagnosis.append("T3 i THY są niskie, zgodnie z chorym stanem eutyreozy. \n");
+        }
+
+        if (fti.getFtiState().equals(State.HIGH) && tt4.getTt4State().equals(State.NORMAL) && t4U.getT4uState().equals(State.NORMAL)) {
+            diagnosis.append("Nieznacznie podwyższone FTI zgodne z leczeniem tyroksyną. \n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL) && tt4.getTt4State().equals(State.HIGH)
+                && (!fti.getFtiState().equals(State.LOW) && !ft4.getFt4State().equals(State.LOW))) {
+            diagnosis.append("Podwyższone T4 zgodne z lekami tyroksyny. \n");
+        }
+
+        if (discthy && !pregnant) {
+            diagnosis.append("Eleveated T4 query thyroxine therapy. \n");
+        }
+
+        if (t3.getT3State().equals(State.LOW) && tsh.getTshState().equals(State.NORMAL) && fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Low T3, high FTI, normal TSH consistent with non-thyroidal illness and t4 therapy. \n");
+        }
+
+        if (hithy && !vhthy) {
+            diagnosis.append("Podwyższony FTI zgodny z zastępowaniem tyroksyny. \n");
+        }
+
+        if (!tt4.getTt4State().equals(State.LOW) && vhthy) {
+            diagnosis.append("Podwyższony FTI zgodny z zastępowaniem tyroksyny. \n");
+        }
+
+        if (t3.getT3State().equals(State.HIGH) && t4U.getT4uState().equals(State.HIGH) && northy && pregnant) {
+            diagnosis.append("Podwyższony T3 zgodny ze zwiększonym białkiem wiążącym. \n");
+        }
+
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.NORMAL)
+                && fti.getFtiState().equals(State.LOW) && t3.getT3State().equals(State.HIGH)) {
+            diagnosis.append("Podwyższony T3 zgodny ze zwiększonym białkiem wiążącym. Podwyższony TSH i niski FTI sugerują wymianę. \n");
+        }
+
+        if (northy && t4U.getT4uState().equals(State.HIGH) && !tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone T4U zgodne ze zwiększonym białkiem wiążącym. \n");
+        }
+
+        if (t4U.getT4uState().equals(State.HIGH) && fti.getFtiState().equals(State.LOW)
+                && tt4.getTt4State().equals(State.NORMAL) && !tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone T4U zgodne ze zwiększonym białkiem wiążącym. \n");
+        }
+
+        if (!t3.getT3State().equals(State.HIGH) && !tt4.getTt4State().equals(State.HIGH)
+                && !t4U.getT4uState().equals(State.HIGH) && !tbg.getTbgState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone T3 i T4 zgodne z tyreotoksykozą. \n");
+        }
+
+        if (discthy && pregnant) {
+            diagnosis.append("Podwyższone T4 i T4U zgodne ze zwiększonym białkiem wiążącym. \n");
+        }
+
+        if (discthy && t3.getT3State().equals(State.HIGH) && tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone T4 i T3 zgodne ze zwiększonym białkiem wiążącym. Podwyższony TSH sugeruje niedostateczną wymianę. \n");
+        }
+
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.NORMAL)
+                && fti.getFtiState().equals(State.LOW) && !t3.getT3State().equals(State.HIGH)) {
+            diagnosis.append("Podwyższone TSH i niski FTI zgodne z pierwotną niedoczynnością tarczycy. \n");
+        }
+
+        if (t3.getT3State().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
+                && fti.getFtiState().equals(State.LOW) && !sick) {
+            diagnosis.append("niski poziom hormonów tarczycy sugeruje niedoczynność tarczycy, do pełnej interpretacji wymaga TSH. \n");
+        }
+
+        if (lothy && t3.getT3State().equals(State.LOW) && tsh.getTshState().equals(State.LOW)) {
+            diagnosis.append("Niskie hormony tarczycy bez podwyższonego TSH. zgodne z wtórną niedoczynnością tarczycy. \n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL) && tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Prawidłowy T3 z podwyższonym TSH jest zgodny z wyrównaną niedoczynnością tarczycy. \n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL) && tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Normalny T3. Nieznacznie podwyższone TSH sugeruje skompensowaną niedoczynność tarczycy. \n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL) && t4U.getT4uState().equals(State.LOW)) {
+            diagnosis.append("Normalny T3 i niski T4 z podwyższonym TSH zgodnym z wyrównaną niedoczynnością tarczycy. \n");
+        }
+
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.LOW)
+                && t3.getT3State().equals(State.LOW) && fti.getFtiState().equals(State.NORMAL)
+                && t4U.getT4uState().equals(State.NORMAL)) {
+            diagnosis.append("Niski poziom T3 wskazuje na chorobę niezwiązaną z tarczycą, podwyższony " +
+                    "TSH wskazuje na wyrównaną niedoczynność tarczycy, a niski T4U wskazuje na niski poziom wiązania białka . \n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL)
+                && fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Niezgodne testy czynności tarczycy. Ten profil zgodny z interferencją leków.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.LOW)) {
+            diagnosis.append("Niskie FT4.\n");
+        }
+
+        if (fti.getFtiState().equals(State.LOW)) {
+            diagnosis.append("Niskie FTI.\n");
+        }
+
+        if (t3.getT3State().equals(State.LOW)) {
+            diagnosis.append("Niskie T3.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW)) {
+            diagnosis.append("Niskie T4U.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.LOW)) {
+            diagnosis.append("Niskie TBG.\n");
+        }
+
+        if (tsh.getTshState().equals(State.LOW)) {
+            diagnosis.append("Niskie TSH.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.LOW)) {
+            diagnosis.append("Niskie TT4.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.NORMAL)) {
+            diagnosis.append("FT4 w normie.\n");
+        }
+
+        if (fti.getFtiState().equals(State.NORMAL)) {
+            diagnosis.append("FTI w normie.\n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL)) {
+            diagnosis.append("T3 w normie.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.NORMAL)) {
+            diagnosis.append("T4U w normie.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.NORMAL)) {
+            diagnosis.append("TBG w normie.\n");
+        }
+
+        if (tsh.getTshState().equals(State.NORMAL)) {
+            diagnosis.append("TSH w normie.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.NORMAL)) {
+            diagnosis.append("TT4 w normie.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie FT4.\n");
+        }
+
+        if (fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie FTI.\n");
+        }
+
+        if (t3.getT3State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie T3.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie T4U.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TBG.\n");
+        }
+
+        if (tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TSH.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TT4.\n");
+        }
+
         return diagnosis;
     }
 
@@ -119,13 +400,13 @@ public class Main {
     }
 
     private static void pregnant() {
-        if (((age > 13 && age < 48) || age == 0) && ovulatory) {
+        if ((age > 13 && age < 48) && ovulatory) {
             pregnant = true;
         }
     }
 
     private static void ovulatory() {
-        if (((age > 13 && age < 48) || age == 0) && !sex) {
+        if (age > 13 && age < 48 && !sex) {
             ovulatory = true;
         }
     }
@@ -143,17 +424,12 @@ public class Main {
     }
 
     private static void northy() {
-        if (ft4.getFt4State().equals(State.MISSING) &&
-                ((fti.getFtiState().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL))
+        if (((fti.getFtiState().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL))
                 || (fti.getFtiState().equals(State.NORMAL))
-                || (fti.getFtiState().equals(State.NORMAL) && tt4.getTt4State().equals(State.MISSING))
-                || (fti.getFtiState().equals(State.MISSING) && tt4.getTt4State().equals(State.NORMAL)))) {
+                || (tt4.getTt4State().equals(State.NORMAL)))) {
             northy = true;
         }
-        if (fti.getFtiState().equals(State.MISSING) &&
-                ((ft4.getFt4State().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL))
-                || ft4.getFt4State().equals(State.NORMAL) && tt4.getTt4State().equals(State.MISSING)
-                || ft4.getFt4State().equals(State.MISSING) && ft4.getFt4State().equals(State.NORMAL))) {
+        if ((ft4.getFt4State().equals(State.NORMAL))) {
             northy = true;
         }
     }
@@ -161,14 +437,13 @@ public class Main {
     private static void hithy() {
         if (ft4.getFt4State().equals(State.MISSING) &&
                 ((fti.getFtiState().equals(State.HIGH) && tt4.getTt4State().equals(State.HIGH))
-                || (fti.getFtiState().equals(State.HIGH) && tt4.getTt4State().equals(State.MISSING))
-                || (fti.getFtiState().equals(State.MISSING) && tt4.getTt4State().equals(State.HIGH)))) {
+                || (fti.getFtiState().equals(State.HIGH))
+                || (tt4.getTt4State().equals(State.HIGH)))) {
             hithy = true;
         }
-        if (fti.getFtiState().equals(State.MISSING) &&
-                ((ft4.getFt4State().equals(State.HIGH) && tt4.getTt4State().equals(State.HIGH))
-                || (ft4.getFt4State().equals(State.HIGH) && tt4.getTt4State().equals(State.MISSING))
-                || (ft4.getFt4State().equals(State.MISSING) && tt4.getTt4State().equals(State.HIGH)))) {
+        if (((ft4.getFt4State().equals(State.HIGH) && tt4.getTt4State().equals(State.HIGH))
+                || (ft4.getFt4State().equals(State.HIGH))
+                || (tt4.getTt4State().equals(State.HIGH)))) {
             hithy = true;
         }
     }
@@ -192,23 +467,20 @@ public class Main {
     }
 
     private static void lothy() {
-        if (ft4.getFt4State().equals(State.MISSING) &&
-                ((fti.getFtiState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW))
-                || (fti.getFtiState().equals(State.LOW) && tt4.getTt4State().equals(State.MISSING))
-                || (fti.getFtiState().equals(State.MISSING) && tt4.getTt4State().equals(State.LOW)))) {
+        if (((fti.getFtiState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW))
+                || (fti.getFtiState().equals(State.LOW))
+                || (tt4.getTt4State().equals(State.LOW)))) {
             lothy = true;
         }
-        if (fti.getFtiState().equals(State.MISSING) &&
-                ((ft4.getFt4State().equals(State.LOW) && tt4.getTt4State().equals(State.LOW))
-                || (ft4.getFt4State().equals(State.LOW) && tt4.getTt4State().equals(State.MISSING))
-                || (ft4.getFt4State().equals(State.MISSING) && tt4.getTt4State().equals(State.LOW)))) {
+        if (((ft4.getFt4State().equals(State.LOW) && tt4.getTt4State().equals(State.LOW))
+                || (ft4.getFt4State().equals(State.LOW))
+                || (tt4.getTt4State().equals(State.LOW)))) {
             lothy = true;
         }
     }
 
     private static void discthy() {
-        if (ft4.getFt4State().equals(State.MISSING) &&
-                (t4U.getT4uState().equals(State.HIGH) || fti.getFtiState().equals(State.NORMAL))
+        if ((t4U.getT4uState().equals(State.HIGH) || fti.getFtiState().equals(State.NORMAL))
                 && tt4.getTt4State().equals(State.HIGH)) {
             discthy = true;
         }
