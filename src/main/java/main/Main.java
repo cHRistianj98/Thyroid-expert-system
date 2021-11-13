@@ -41,10 +41,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Czy jesteś mężczyzną (true/false)?:");
+        System.out.println("Czy badany jest mężczyzną (true/false)?:");
         sex = scanner.nextBoolean();
 
-        System.out.println("Podaj swój wiek (1-100):");
+        System.out.println("Podaj wiek pacjenta (1-100):");
         age = scanner.nextInt();
 
         System.out.println("Podaj ilość TSH w μIU/ml (0-15):");
@@ -94,6 +94,90 @@ public class Main {
 
     private static StringBuilder diagnosis() {
         StringBuilder diagnosis = new StringBuilder();
+
+        if (ft4.getFt4State().equals(State.LOW)) {
+            diagnosis.append("Niskie FT4.\n");
+        }
+
+        if (fti.getFtiState().equals(State.LOW)) {
+            diagnosis.append("Niskie FTI.\n");
+        }
+
+        if (t3.getT3State().equals(State.LOW)) {
+            diagnosis.append("Niskie T3.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.LOW)) {
+            diagnosis.append("Niskie T4U.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.LOW)) {
+            diagnosis.append("Niskie TBG.\n");
+        }
+
+        if (tsh.getTshState().equals(State.LOW)) {
+            diagnosis.append("Niskie TSH.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.LOW)) {
+            diagnosis.append("Niskie TT4.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.NORMAL)) {
+            diagnosis.append("FT4 w normie.\n");
+        }
+
+        if (fti.getFtiState().equals(State.NORMAL)) {
+            diagnosis.append("FTI w normie.\n");
+        }
+
+        if (t3.getT3State().equals(State.NORMAL)) {
+            diagnosis.append("T3 w normie.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.NORMAL)) {
+            diagnosis.append("T4U w normie.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.NORMAL)) {
+            diagnosis.append("TBG w normie.\n");
+        }
+
+        if (tsh.getTshState().equals(State.NORMAL)) {
+            diagnosis.append("TSH w normie.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.NORMAL)) {
+            diagnosis.append("TT4 w normie.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie FT4.\n");
+        }
+
+        if (fti.getFtiState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie FTI.\n");
+        }
+
+        if (t3.getT3State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie T3.\n");
+        }
+
+        if (t4U.getT4uState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie T4U.\n");
+        }
+
+        if (tbg.getTbgState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TBG.\n");
+        }
+
+        if (tsh.getTshState().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TSH.\n");
+        }
+
+        if (tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Wysokie TT4.\n");
+        }
 
         if (t3.getT3State().equals(State.HIGH)
                 && hithy
@@ -306,88 +390,40 @@ public class Main {
             diagnosis.append("Niezgodne testy czynności tarczycy. Ten profil zgodny z interferencją leków.\n");
         }
 
-        if (ft4.getFt4State().equals(State.LOW)) {
-            diagnosis.append("Niskie FT4.\n");
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Wtórna nadczynność tarczycy, gruczolak przysadki wydzielający TSH.\n");
         }
 
-        if (fti.getFtiState().equals(State.LOW)) {
-            diagnosis.append("Niskie FTI.\n");
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.NORMAL)) {
+            diagnosis.append("Subkliniczna niedoczynność tarczycy.\n");
         }
 
-        if (t3.getT3State().equals(State.LOW)) {
-            diagnosis.append("Niskie T3.\n");
+        if (tsh.getTshState().equals(State.HIGH) && tt4.getTt4State().equals(State.LOW)) {
+            diagnosis.append("Pierwotna niedoczynność tarczycy, autoimmunologiczne zapalenie tarczycy.\n");
         }
 
-        if (t4U.getT4uState().equals(State.LOW)) {
-            diagnosis.append("Niskie T4U.\n");
+        if (tsh.getTshState().equals(State.NORMAL) && tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Wtórna nadczynność tarczycy, gruczolak przysadki wydzielający TSH .\n");
         }
 
-        if (tbg.getTbgState().equals(State.LOW)) {
-            diagnosis.append("Niskie TBG.\n");
+        if (tsh.getTshState().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL)) {
+            diagnosis.append("Na podstawie badań TSH oraz T4 pacjent ma zdrową tarczycę.\n");
         }
 
-        if (tsh.getTshState().equals(State.LOW)) {
-            diagnosis.append("Niskie TSH.\n");
+        if (tsh.getTshState().equals(State.NORMAL) && tt4.getTt4State().equals(State.LOW)) {
+            diagnosis.append("Wtórna niedoczynność tarczycy, niewydzielniczy gruczolak przysadki.\n");
         }
 
-        if (tt4.getTt4State().equals(State.LOW)) {
-            diagnosis.append("Niskie TT4.\n");
+        if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Pierwotna nadczynność tarczycy, choroba Grave'a .\n");
         }
 
-        if (ft4.getFt4State().equals(State.NORMAL)) {
-            diagnosis.append("FT4 w normie.\n");
+        if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.NORMAL)) {
+            diagnosis.append("Subkliniczna nadczynność tarczycy lub toksykoza T3.\n");
         }
 
-        if (fti.getFtiState().equals(State.NORMAL)) {
-            diagnosis.append("FTI w normie.\n");
-        }
-
-        if (t3.getT3State().equals(State.NORMAL)) {
-            diagnosis.append("T3 w normie.\n");
-        }
-
-        if (t4U.getT4uState().equals(State.NORMAL)) {
-            diagnosis.append("T4U w normie.\n");
-        }
-
-        if (tbg.getTbgState().equals(State.NORMAL)) {
-            diagnosis.append("TBG w normie.\n");
-        }
-
-        if (tsh.getTshState().equals(State.NORMAL)) {
-            diagnosis.append("TSH w normie.\n");
-        }
-
-        if (tt4.getTt4State().equals(State.NORMAL)) {
-            diagnosis.append("TT4 w normie.\n");
-        }
-
-        if (ft4.getFt4State().equals(State.HIGH)) {
-            diagnosis.append("Wysokie FT4.\n");
-        }
-
-        if (fti.getFtiState().equals(State.HIGH)) {
-            diagnosis.append("Wysokie FTI.\n");
-        }
-
-        if (t3.getT3State().equals(State.HIGH)) {
-            diagnosis.append("Wysokie T3.\n");
-        }
-
-        if (t4U.getT4uState().equals(State.HIGH)) {
-            diagnosis.append("Wysokie T4U.\n");
-        }
-
-        if (tbg.getTbgState().equals(State.HIGH)) {
-            diagnosis.append("Wysokie TBG.\n");
-        }
-
-        if (tsh.getTshState().equals(State.HIGH)) {
-            diagnosis.append("Wysokie TSH.\n");
-        }
-
-        if (tt4.getTt4State().equals(State.HIGH)) {
-            diagnosis.append("Wysokie TT4.\n");
+        if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)) {
+            diagnosis.append("Wtórna kliniczna niedoczynność tarczycy, niewydzielniczy gruczolak przysadki.\n");
         }
 
         return diagnosis;
