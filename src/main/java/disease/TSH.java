@@ -4,7 +4,11 @@ import enums.TSH_BORD;
 import enums.State;
 
 public class TSH implements disease.State {
-    private State tshState;
+    private State tshState = State.UNDEFINED;
+
+    public TSH() {
+
+    }
 
     public TSH(double tshValue) {
         setState(tshValue);

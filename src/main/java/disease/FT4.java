@@ -4,7 +4,10 @@ import enums.State;
 import enums.TSH_BORD;
 
 public class FT4 implements disease.State {
-    private State ft4State;
+    private State ft4State = State.UNDEFINED;
+
+    public FT4() {
+    }
 
     public FT4(double ft4Value) {
         setState(ft4Value);

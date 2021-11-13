@@ -3,7 +3,10 @@ package disease;
 import enums.State;
 
 public class FTI implements disease.State {
-    private State ftiState;
+    private State ftiState = State.UNDEFINED;
+
+    public FTI() {
+    }
 
     public FTI(double ftiValue) {
         setState(ftiValue);
