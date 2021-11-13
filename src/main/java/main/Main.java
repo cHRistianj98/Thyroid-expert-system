@@ -8,7 +8,6 @@ import disease.TBG;
 import disease.TSH;
 import disease.TT4;
 import enums.State;
-import org.w3c.dom.html.HTMLDOMImplementation;
 
 import java.util.Scanner;
 
@@ -41,6 +40,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Zastosuj się do instrukcji. Jeżeli badanie nie zostało wykonane wpisz 0");
         System.out.println("Czy badany jest mężczyzną (true/false)?:");
         sex = scanner.nextBoolean();
 
@@ -53,15 +53,15 @@ public class Main {
 
         System.out.println("Podaj ilość T3 w pg/mL (0-5):");
         double t3_value = scanner.nextDouble();
-        t3 = new T3(tsh_value);
+        t3 = new T3(t3_value);
 
         System.out.println("Podaj ilość FTI (0-200):");
         double fti_value = scanner.nextDouble();
-        fti = new FTI(tsh_value);
+        fti = new FTI(fti_value);
 
         System.out.println("Podaj ilość TT4 (0-200):");
         double tt4_value = scanner.nextDouble();
-        tt4 = new TT4(tsh_value);
+        tt4 = new TT4(tt4_value);
 
         System.out.println("Podaj ilość T4U (0-2):");
         double t4u_value = scanner.nextDouble();
@@ -75,6 +75,13 @@ public class Main {
         double tbg_value = scanner.nextDouble();
         tbg = new TBG(tbg_value);
 
+      initializeAttributes();
+
+        System.out.println(makeDiagnosis());
+
+    }
+    
+    private static void initializeAttributes() {
         hithy();
         borthy();
         vhthy();
@@ -87,12 +94,9 @@ public class Main {
         ovulatory();
         pregnant();
         sick();
-
-        System.out.println(diagnosis());
-
     }
 
-    private static StringBuilder diagnosis() {
+    private static StringBuilder makeDiagnosis() {
         StringBuilder diagnosis = new StringBuilder();
 
         if (ft4.getFt4State().equals(State.LOW)) {
@@ -227,7 +231,7 @@ public class Main {
         }
 
         if (lothy && (t3.getT3State().equals(State.NORMAL))) {
-            diagnosis.append("Niskie THY. \n");
+            diagnosis.append("Niskie THY. ");
             diagnosis.append("zgodne z wtórną niedoczynnością tarczycy. \n");
         }
 
@@ -236,7 +240,7 @@ public class Main {
         }
 
         if (lothy && (t3.getT3State().equals(State.NORMAL))) {
-            diagnosis.append("Niskie THY. \n");
+            diagnosis.append("Niskie THY. ");
             diagnosis.append("Rozpoznanie pierwotnej niedoczynności tarczycy zależy od TSH. \n");
         }
 
@@ -339,11 +343,6 @@ public class Main {
             diagnosis.append("Podwyższone T4U zgodne ze zwiększonym białkiem wiążącym. \n");
         }
 
-        if (!t3.getT3State().equals(State.HIGH) && !tt4.getTt4State().equals(State.HIGH)
-                && !t4U.getT4uState().equals(State.HIGH) && !tbg.getTbgState().equals(State.HIGH)) {
-            diagnosis.append("Podwyższone T3 i T4 zgodne z tyreotoksykozą. \n");
-        }
-
         if (discthy && pregnant) {
             diagnosis.append("Podwyższone T4 i T4U zgodne ze zwiększonym białkiem wiążącym. \n");
         }
@@ -403,7 +402,7 @@ public class Main {
         }
 
         if (tsh.getTshState().equals(State.NORMAL) && tt4.getTt4State().equals(State.HIGH)) {
-            diagnosis.append("Wtórna nadczynność tarczycy, gruczolak przysadki wydzielający TSH .\n");
+            diagnosis.append("Wtórna nadczynność tarczycy, gruczolak przysadki wydzielający TSH.\n");
         }
 
         if (tsh.getTshState().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL)) {
@@ -418,12 +417,26 @@ public class Main {
             diagnosis.append("Pierwotna nadczynność tarczycy, choroba Grave'a .\n");
         }
 
+        if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.HIGH)) {
+            diagnosis.append("Pierwotna nadczynność tarczycy, choroba Grave'a .\n");
+        }
+
         if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.NORMAL)) {
             diagnosis.append("Subkliniczna nadczynność tarczycy lub toksykoza T3.\n");
         }
 
         if (tsh.getTshState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)) {
             diagnosis.append("Wtórna kliniczna niedoczynność tarczycy, niewydzielniczy gruczolak przysadki.\n");
+        }
+
+        if (ft4.getFt4State().equals(State.NORMAL) || ft4.getFt4State().equals(State.MISSING)
+                && fti.getFtiState().equals(State.NORMAL) || fti.getFtiState().equals(State.MISSING)
+                && t3.getT3State().equals(State.NORMAL) || t3.getT3State().equals(State.MISSING)
+                && t4U.getT4uState().equals(State.NORMAL) || t4U.getT4uState().equals(State.MISSING)
+                && tbg.getTbgState().equals(State.NORMAL) || tbg.getTbgState().equals(State.MISSING)
+                && tsh.getTshState().equals(State.NORMAL) || tsh.getTshState().equals(State.MISSING)
+                && tt4.getTt4State().equals(State.NORMAL) || tt4.getTt4State().equals(State.MISSING)) {
+            diagnosis.append("Wszystkie badania w normie, pacjent zdrowy.\n");
         }
 
         return diagnosis;
