@@ -1,10 +1,9 @@
 package disease;
 
 import enums.State;
-import enums.TSH_BORD;
 
 public class FT4 implements disease.State {
-    private State ft4State = State.UNDEFINED;
+    private State ft4State = State.MISSING;
 
     public FT4() {
     }
@@ -24,7 +23,7 @@ public class FT4 implements disease.State {
         } else if (ft4Value > 22) {
             ft4State = State.HIGH;
         } else {
-            ft4State = State.UNDEFINED;
+            ft4State = State.MISSING;
         }
     }
 

@@ -39,6 +39,6 @@ public class FTITest {
     public void undefined() {
         double ftiValue = -10.0d;
         FTI fti = new FTI(ftiValue);
-        assertEquals(State.UNDEFINED, fti.getFtiState());
+        assertEquals(State.MISSING, fti.getFtiState());
     }
 }

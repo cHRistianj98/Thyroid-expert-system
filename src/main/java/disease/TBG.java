@@ -3,7 +3,7 @@ package disease;
 import enums.State;
 
 public class TBG implements disease.State {
-    private State tbgState = State.UNDEFINED;
+    private State tbgState = State.MISSING;
 
     public TBG() {
     }
@@ -23,7 +23,7 @@ public class TBG implements disease.State {
         } else if (tbgValue > 30) {
             tbgState = State.HIGH;
         } else {
-            tbgState = State.UNDEFINED;
+            tbgState = State.MISSING;
         }
     }
 

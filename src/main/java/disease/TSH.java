@@ -4,7 +4,7 @@ import enums.TSH_BORD;
 import enums.State;
 
 public class TSH implements disease.State {
-    private State tshState = State.UNDEFINED;
+    private State tshState = State.MISSING;
 
     public TSH() {
 
@@ -30,7 +30,7 @@ public class TSH implements disease.State {
         } else if (tshValue > 6) {
             tshState = State.HIGH;
         } else {
-            tshState = State.UNDEFINED;
+            tshState = State.MISSING;
         }
     }
 

@@ -3,7 +3,7 @@ package disease;
 import enums.State;
 
 public class FTI implements disease.State {
-    private State ftiState = State.UNDEFINED;
+    private State ftiState = State.MISSING;
 
     public FTI() {
     }
@@ -23,7 +23,7 @@ public class FTI implements disease.State {
         } else if (ftiValue > 155) {
             ftiState = State.HIGH;
         } else {
-            ftiState = State.UNDEFINED;
+            ftiState = State.MISSING;
         }
     }
 

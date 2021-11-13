@@ -39,6 +39,6 @@ public class TT4Test {
     public void undefined() {
         double tt4Value = -10.0d;
         TT4 tt4 = new TT4(tt4Value);
-        assertEquals(State.UNDEFINED, tt4.getTt4State());
+        assertEquals(State.MISSING, tt4.getTt4State());
     }
 }

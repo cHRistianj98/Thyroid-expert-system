@@ -39,6 +39,6 @@ public class T4UTest {
     public void undefined() {
         double t4uValue = -10.0d;
         T4U t4u = new T4U(t4uValue);
-        assertEquals(State.UNDEFINED, t4u.getT4uState());
+        assertEquals(State.MISSING, t4u.getT4uState());
     }
 }

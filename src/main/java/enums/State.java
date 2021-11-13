@@ -5,5 +5,5 @@ public enum State {
     LOW,
     NORMAL,
     HIGH,
-    UNDEFINED
+    MISSING
 }

@@ -39,6 +39,6 @@ public class TSHTest {
     public void undefined() {
         double tshValue = -10.9d;
         TSH tsh = new TSH(tshValue);
-        assertEquals(State.UNDEFINED, tsh.getTshState());
+        assertEquals(State.MISSING, tsh.getTshState());
     }
 }

@@ -39,6 +39,6 @@ public class FT4Test {
     public void undefined() {
         double ft4Value = -33.9d;
         FT4 ft4 = new FT4(ft4Value);
-        assertEquals(State.UNDEFINED, ft4.getFt4State());
+        assertEquals(State.MISSING, ft4.getFt4State());
     }
 }

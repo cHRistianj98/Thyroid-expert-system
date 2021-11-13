@@ -3,7 +3,7 @@ package disease;
 import enums.State;
 
 public class TT4 implements disease.State {
-    private State tt4State = State.UNDEFINED;
+    private State tt4State = State.MISSING;
 
     public TT4() {
     }
@@ -23,7 +23,7 @@ public class TT4 implements disease.State {
         } else if (tt4Value > 150) {
             tt4State = State.HIGH;
         } else {
-            tt4State = State.UNDEFINED;
+            tt4State = State.MISSING;
         }
     }
 

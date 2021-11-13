@@ -39,6 +39,6 @@ public class TBGTest {
     public void undefined() {
         double tbgValue = -10.0d;
         TBG tbg = new TBG(tbgValue);
-        assertEquals(State.UNDEFINED, tbg.getTbgState());
+        assertEquals(State.MISSING, tbg.getTbgState());
     }
 }

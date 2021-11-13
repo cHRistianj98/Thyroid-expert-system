@@ -39,6 +39,6 @@ public class T3Test {
     public void undefined() {
         double t3Value = -10.0d;
         T3 t3 = new T3(t3Value);
-        assertEquals(State.UNDEFINED, t3.getT3State());
+        assertEquals(State.MISSING, t3.getT3State());
     }
 }
