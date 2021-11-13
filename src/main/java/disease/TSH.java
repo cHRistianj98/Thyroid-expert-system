@@ -1,16 +1,16 @@
 package disease;
 
 import enums.TSH_BORD;
-import enums.TSH_STATE;
+import enums.State;
 
-public class TSH {
-    private TSH_STATE tshState;
+public class TSH implements disease.State {
+    private State tshState;
 
     public TSH(double tshValue) {
-        setUserTshState(tshValue);
+        setState(tshValue);
     }
 
-    public void setUserTshState(double tshValue) {
+    public void setState(double tshValue) {
         TSH_BORD tsh_bord;
 
         if (tshValue < 10 && tshValue > 6) {
@@ -18,23 +18,23 @@ public class TSH {
         }
 
         if (tshValue == 0) {
-            tshState = TSH_STATE.NOT_READY;
+            tshState = State.NOT_READY;
         } else if (tshValue < 0.2 && tshValue > 0) {
-            tshState = TSH_STATE.LOW;
+            tshState = State.LOW;
         } else if (tshValue <= 6 && tshValue >= 0.2) {
-            tshState = TSH_STATE.NORMAL;
+            tshState = State.NORMAL;
         } else if (tshValue > 6) {
-            tshState = TSH_STATE.HIGH;
+            tshState = State.HIGH;
         } else {
-            tshState = TSH_STATE.UNDEFINED;
+            tshState = State.UNDEFINED;
         }
     }
 
-    public TSH_STATE getTshState() {
+    public State getTshState() {
         return tshState;
     }
 
-    public void setTshState(TSH_STATE tshState) {
+    public void setTshState(State tshState) {
         this.tshState = tshState;
     }
 }

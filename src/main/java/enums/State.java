@@ -1,6 +1,6 @@
 package enums;
 
-public enum TSH_STATE {
+public enum State {
     NOT_READY,
     LOW,
     NORMAL,
