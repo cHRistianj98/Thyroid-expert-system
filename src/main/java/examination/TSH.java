@@ -1,13 +1,9 @@
-package disease;
+package examination;
 
 import enums.State;
 
-public class TSH implements disease.State {
+public class TSH implements examination.State {
     private State tshState = State.MISSING;
-
-    public TSH() {
-
-    }
 
     public TSH(double tshValue) {
         setState(tshValue);
@@ -29,9 +25,5 @@ public class TSH implements disease.State {
 
     public State getTshState() {
         return tshState;
-    }
-
-    public void setTshState(State tshState) {
-        this.tshState = tshState;
     }
 }

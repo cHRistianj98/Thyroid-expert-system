@@ -1,12 +1,9 @@
-package disease;
+package examination;
 
 import enums.State;
 
-public class T4U implements disease.State {
+public class T4U implements examination.State {
     private State t4uState = State.MISSING;
-
-    public T4U() {
-    }
 
     public T4U(double t4uValue) {
         setState(t4uValue);
@@ -29,9 +26,5 @@ public class T4U implements disease.State {
 
     public State getT4uState() {
         return t4uState;
-    }
-
-    public void setT4uState(State t4uState) {
-        this.t4uState = t4uState;
     }
 }

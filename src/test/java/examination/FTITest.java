@@ -1,4 +1,4 @@
-package disease;
+package examination;
 
 import enums.State;
 import org.junit.jupiter.api.Test;

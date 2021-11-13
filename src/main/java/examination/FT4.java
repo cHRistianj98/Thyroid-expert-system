@@ -1,12 +1,9 @@
-package disease;
+package examination;
 
 import enums.State;
 
-public class FT4 implements disease.State {
+public class FT4 implements examination.State {
     private State ft4State = State.MISSING;
-
-    public FT4() {
-    }
 
     public FT4(double ft4Value) {
         setState(ft4Value);
@@ -29,9 +26,5 @@ public class FT4 implements disease.State {
 
     public State getFt4State() {
         return ft4State;
-    }
-
-    public void setFt4State(State ft4State) {
-        this.ft4State = ft4State;
     }
 }

@@ -1,12 +1,9 @@
-package disease;
+package examination;
 
 import enums.State;
 
-public class FTI implements disease.State {
+public class FTI implements examination.State {
     private State ftiState = State.MISSING;
-
-    public FTI() {
-    }
 
     public FTI(double ftiValue) {
         setState(ftiValue);
@@ -29,9 +26,5 @@ public class FTI implements disease.State {
 
     public State getFtiState() {
         return ftiState;
-    }
-
-    public void setFtiState(State ftiState) {
-        this.ftiState = ftiState;
     }
 }

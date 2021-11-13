@@ -1,29 +1,24 @@
 package main;
 
-import disease.FT4;
-import disease.FTI;
-import disease.T3;
-import disease.T4U;
-import disease.TBG;
-import disease.TSH;
-import disease.TT4;
+import examination.FT4;
+import examination.FTI;
+import examination.T3;
+import examination.T4U;
+import examination.TBG;
+import examination.TSH;
+import examination.TT4;
 import enums.State;
 
 import java.util.Scanner;
 
 public class Main {
     private static boolean hithy = false;
-    private static boolean borthy = false;
     private static boolean vhthy = false;
     private static boolean northy = false;
     private static boolean lothy = false;
     private static boolean discthy = false;
-    private static boolean ht3t4_utsh = false;
-    private static boolean e2_mtsh = false;
-    private static boolean ht3_lt4 = false;
     private static boolean ovulatory = false;
     private static boolean pregnant = false;
-    private static boolean sick = false;
     // true - man, false - woman
     private static boolean sex = false;
 
@@ -75,25 +70,19 @@ public class Main {
         double tbg_value = scanner.nextDouble();
         tbg = new TBG(tbg_value);
 
-      initializeAttributes();
-
+        initializeAttributes();
         System.out.println(makeDiagnosis());
-
+        scanner.close();
     }
     
     private static void initializeAttributes() {
         hithy();
-        borthy();
         vhthy();
         northy();
         lothy();
         discthy();
-        ht3t4_utsh();
-        ht3_lt4();
-        e2_mtsh();
         ovulatory();
         pregnant();
-        sick();
     }
 
     private static StringBuilder makeDiagnosis() {
@@ -357,7 +346,7 @@ public class Main {
         }
 
         if (t3.getT3State().equals(State.LOW) && tt4.getTt4State().equals(State.LOW)
-                && fti.getFtiState().equals(State.LOW) && !sick) {
+                && fti.getFtiState().equals(State.LOW)) {
             diagnosis.append("niski poziom hormonów tarczycy sugeruje niedoczynność tarczycy, do pełnej interpretacji wymaga TSH. \n");
         }
 
@@ -429,23 +418,17 @@ public class Main {
             diagnosis.append("Wtórna kliniczna niedoczynność tarczycy, niewydzielniczy gruczolak przysadki.\n");
         }
 
-        if (ft4.getFt4State().equals(State.NORMAL) || ft4.getFt4State().equals(State.MISSING)
-                && fti.getFtiState().equals(State.NORMAL) || fti.getFtiState().equals(State.MISSING)
-                && t3.getT3State().equals(State.NORMAL) || t3.getT3State().equals(State.MISSING)
-                && t4U.getT4uState().equals(State.NORMAL) || t4U.getT4uState().equals(State.MISSING)
-                && tbg.getTbgState().equals(State.NORMAL) || tbg.getTbgState().equals(State.MISSING)
-                && tsh.getTshState().equals(State.NORMAL) || tsh.getTshState().equals(State.MISSING)
-                && tt4.getTt4State().equals(State.NORMAL) || tt4.getTt4State().equals(State.MISSING)) {
+        if ((ft4.getFt4State().equals(State.NORMAL) || ft4.getFt4State().equals(State.MISSING))
+                && (fti.getFtiState().equals(State.NORMAL) || fti.getFtiState().equals(State.MISSING))
+                && (t3.getT3State().equals(State.NORMAL) || t3.getT3State().equals(State.MISSING))
+                && (t4U.getT4uState().equals(State.NORMAL) || t4U.getT4uState().equals(State.MISSING))
+                && (tbg.getTbgState().equals(State.NORMAL) || tbg.getTbgState().equals(State.MISSING))
+                && (tsh.getTshState().equals(State.NORMAL) || tsh.getTshState().equals(State.MISSING))
+                && (tt4.getTt4State().equals(State.NORMAL) || tt4.getTt4State().equals(State.MISSING))) {
             diagnosis.append("Wszystkie badania w normie, pacjent zdrowy.\n");
         }
 
         return diagnosis;
-    }
-
-    private static void sick() {
-        if (age > 70) {
-            sick = true;
-        }
     }
 
     private static void pregnant() {
@@ -457,12 +440,6 @@ public class Main {
     private static void ovulatory() {
         if (age > 13 && age < 48 && !sex) {
             ovulatory = true;
-        }
-    }
-
-    private static void borthy() {
-        if (fti.getFtiState().equals(State.HIGH) && tt4.getTt4State().equals(State.HIGH)) {
-            borthy = true;
         }
     }
 
@@ -497,24 +474,6 @@ public class Main {
         }
     }
 
-    private static void ht3t4_utsh() {
-        if (t3.getT3State().equals(State.HIGH) && hithy && tsh.getTshState().equals(State.LOW)) {
-            ht3t4_utsh = true;
-        }
-    }
-
-    private static void ht3_lt4() {
-        if (t3.getT3State().equals(State.HIGH) && lothy && tsh.getTshState().equals(State.LOW)) {
-            ht3_lt4 = true;
-        }
-    }
-
-    private static void e2_mtsh() {
-        if (t3.getT3State().equals(State.HIGH) && northy && tsh.getTshState().equals(State.MISSING)) {
-            e2_mtsh = true;
-        }
-    }
-
     private static void lothy() {
         if (((fti.getFtiState().equals(State.LOW) && tt4.getTt4State().equals(State.LOW))
                 || (fti.getFtiState().equals(State.LOW))
@@ -534,5 +493,4 @@ public class Main {
             discthy = true;
         }
     }
-
 }
