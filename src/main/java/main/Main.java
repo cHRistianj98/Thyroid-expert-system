@@ -36,43 +36,77 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Zastosuj się do instrukcji. Jeżeli badanie nie zostało wykonane wpisz 0");
-        System.out.println("Czy badany jest mężczyzną (true/false)?:");
-        sex = scanner.nextBoolean();
+        String sexQuestion = "Czy badany jest mężczyzną (true/false)?:";
+        loadBooleanDataFromUser(scanner, sexQuestion);
 
-        System.out.println("Podaj wiek pacjenta (1-100):");
-        age = scanner.nextInt();
+        String ageQuestion = "Podaj wiek pacjenta (1-100):";
+        loadIntegerDataFromUser(scanner, ageQuestion);
 
-        System.out.println("Podaj ilość TSH w μIU/ml (0-15):");
-        double tsh_value = scanner.nextDouble();
-        tsh = new TSH(tsh_value);
+        String tshQuestion = "Podaj ilość TSH w μIU/ml (0-15):";
+        tsh = new TSH(loadDoubleDataFromUser(scanner, tshQuestion));
 
-        System.out.println("Podaj ilość T3 w pg/mL (0-5):");
-        double t3_value = scanner.nextDouble();
-        t3 = new T3(t3_value);
+        String t3Question = "Podaj ilość T3 w pg/mL (0-5):";
+        t3 = new T3(loadDoubleDataFromUser(scanner, t3Question));
 
-        System.out.println("Podaj ilość FTI (0-200):");
-        double fti_value = scanner.nextDouble();
-        fti = new FTI(fti_value);
+        String ftiQuestion = "Podaj ilość FTI (0-200):";
+        fti = new FTI(loadDoubleDataFromUser(scanner, ftiQuestion));
 
-        System.out.println("Podaj ilość TT4 (0-200):");
-        double tt4_value = scanner.nextDouble();
-        tt4 = new TT4(tt4_value);
+        String tt4Question = "Podaj ilość TT4 (0-200):";
+        tt4 = new TT4(loadDoubleDataFromUser(scanner, tt4Question));
 
-        System.out.println("Podaj ilość T4U (0-2):");
-        double t4u_value = scanner.nextDouble();
-        t4U = new T4U(t4u_value);
+        String t4uQuestion = "Podaj ilość T4U (0-2):";
+        t4U = new T4U(loadDoubleDataFromUser(scanner, t4uQuestion));
 
-        System.out.println("Podaj ilość FT4 (0-50):");
-        double ft4_value = scanner.nextDouble();
-        ft4 = new FT4(ft4_value);
+        String ft4Question = "Podaj ilość FT4 (0-50):";
+        ft4 = new FT4(loadDoubleDataFromUser(scanner, ft4Question));
 
-        System.out.println("Podaj ilość TBG (0-50):");
-        double tbg_value = scanner.nextDouble();
-        tbg = new TBG(tbg_value);
+        String tbgQuestion = "Podaj ilość TBG (0-50):";
+        tbg = new TBG(loadDoubleDataFromUser(scanner, tbgQuestion));
 
         initializeAttributes();
         System.out.println(makeDiagnosis());
         scanner.close();
+    }
+
+    private static void loadBooleanDataFromUser(Scanner scanner, String question) {
+        while (true) {
+            try {
+                System.out.println(question);
+                sex = scanner.nextBoolean();
+            } catch (Exception e) {
+                System.out.println("Nieprawidłowe wejście. ");
+                scanner.nextLine();
+                continue;
+            }
+            break;
+        }
+    }
+
+    private static void loadIntegerDataFromUser(Scanner scanner, String question) {
+        while (true) {
+            try {
+                System.out.println(question);
+                age = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Nieprawidłowa liczba całkowita. ");
+                scanner.nextLine();
+                continue;
+            }
+            break;
+        }
+    }
+
+    private static double loadDoubleDataFromUser(Scanner scanner, String question) {
+        while (true) {
+            try {
+                System.out.println(question);
+                double number = scanner.nextDouble();
+                return number;
+            } catch (Exception e) {
+                System.out.println("Nieprawidłowa liczba zmiennoprzecinkowa. ");
+                scanner.nextLine();
+            }
+        }
     }
     
     private static void initializeAttributes() {
@@ -177,6 +211,7 @@ public class Main {
                 && (!tbg.getTbgState().equals(State.HIGH) && !t4U.getT4uState().equals(State.HIGH))) {
             diagnosis.append("T3 i THY są podwyższone zgodnie z tyreotoksykozą.\n");
         }
+
         if (t3.getT3State().equals(State.HIGH)
                 && hithy
                 && (tbg.getTbgState().equals(State.HIGH) || t4U.getT4uState().equals(State.HIGH))) {
