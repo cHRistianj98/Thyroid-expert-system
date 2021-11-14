@@ -256,7 +256,7 @@ public class Main {
 
         if (lothy && (t3.getT3State().equals(State.NORMAL))) {
             diagnosis.append("Niskie THY. ");
-            diagnosis.append("zgodne z wtórną niedoczynnością tarczycy. \n");
+            diagnosis.append("Zgodne z wtórną niedoczynnością tarczycy. \n");
         }
 
         if (lothy && tsh.getTshState().equals(State.NORMAL)) {
@@ -334,11 +334,11 @@ public class Main {
         }
 
         if (discthy && !pregnant) {
-            diagnosis.append("Eleveated T4 query thyroxine therapy. \n");
+            diagnosis.append("Podwyższona terapia tyroksyną w T4. \n");
         }
 
         if (t3.getT3State().equals(State.LOW) && tsh.getTshState().equals(State.NORMAL) && fti.getFtiState().equals(State.HIGH)) {
-            diagnosis.append("Low T3, high FTI, normal TSH consistent with non-thyroidal illness and t4 therapy. \n");
+            diagnosis.append("Niski T3, wysoki FTI, prawidłowe TSH zgodne z chorobą niezwiązaną z tarczycą i terapią T4. \n");
         }
 
         if (hithy && !vhthy) {
@@ -405,7 +405,7 @@ public class Main {
                 && t3.getT3State().equals(State.LOW) && fti.getFtiState().equals(State.NORMAL)
                 && t4U.getT4uState().equals(State.NORMAL)) {
             diagnosis.append("Niski poziom T3 wskazuje na chorobę niezwiązaną z tarczycą, podwyższony " +
-                    "TSH wskazuje na wyrównaną niedoczynność tarczycy, a niski T4U wskazuje na niski poziom wiązania białka . \n");
+                    "TSH wskazuje na wyrównaną niedoczynność tarczycy, a niski T4U wskazuje na niski poziom wiązania białka. \n");
         }
 
         if (t3.getT3State().equals(State.NORMAL) && tt4.getTt4State().equals(State.NORMAL)
